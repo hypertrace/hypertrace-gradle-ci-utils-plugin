@@ -78,22 +78,20 @@ public class CiUtilsPlugin implements Plugin<Project> {
           createdTask.doLast(unused -> {
             File destination = new File(project.getBuildDir(), "dependencies");
             project.mkdir(destination);
-            project
-              .getConfigurations()
-              .matching(Configuration::isCanBeResolved)
-              .forEach(configuration -> {
-                configuration.resolve()
-                  .stream()
-                  .filter(file -> file.getName().endsWith(".jar"))
-                  .forEach(file -> {
-                    project.copy(copySpec -> {
-                      copySpec.from(file);
-                      copySpec.into(destination);
-                    });
+            Configuration configuration = project.getConfigurations().findByName("runtimeClasspath");
+            if (configuration != null) {
+              configuration
+                .resolve()
+                .stream()
+                .filter(file -> file.getName().endsWith(".jar"))
+                .forEach(file -> {
+                  project.copy(copySpec -> {
+                    copySpec.from(file);
+                    copySpec.into(destination);
                   });
-              });
+                });
+            }
           });
         });
   }
-
 }
