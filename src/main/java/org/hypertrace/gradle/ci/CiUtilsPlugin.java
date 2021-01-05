@@ -1,15 +1,18 @@
 package org.hypertrace.gradle.ci;
 
-import javax.annotation.Nonnull;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.hypertrace.gradle.ci.tasks.CopyReportsTask;
 
+import javax.annotation.Nonnull;
+import java.io.File;
+
 public class CiUtilsPlugin implements Plugin<Project> {
   public static final String COPY_ALL_REPORTS_TASK_NAME = "copyAllReports";
   public static final String DOWNLOAD_DEPENDENCIES_TASK_NAME = "downloadDependencies";
   public static final String PRINT_PROJECT_NAME = "printProjectName";
+  public static final String COPY_DEPENDENCIES_TASK_NAME = "copyDependencies";
   private static final String TASK_GROUP = "CircleCI Utility";
 
   @Override
@@ -19,6 +22,7 @@ public class CiUtilsPlugin implements Plugin<Project> {
           this.addReportCopyTaskToProject(project);
           this.addDownloadDependenciesTaskToProject(project);
           this.addPrintProjectNameTaskToProject(project);
+          this.addCopyDependenciesTaskToProject(project);
         });
   }
 
@@ -62,4 +66,34 @@ public class CiUtilsPlugin implements Plugin<Project> {
               createdTask.doLast(unused -> project.getLogger().quiet(project.getName()));
             });
   }
+
+  private void addCopyDependenciesTaskToProject(Project project) {
+    // Create a task to copy all dependencies to build/dependencies folder
+    project
+      .getTasks()
+      .register(
+        COPY_DEPENDENCIES_TASK_NAME,
+        createdTask -> {
+          createdTask.setDescription("Copy dependencies of a project to build/dependencies folder");
+          createdTask.doLast(unused -> {
+            File destination = new File(project.getBuildDir(), "dependencies");
+            project.mkdir(destination);
+            project
+              .getConfigurations()
+              .matching(Configuration::isCanBeResolved)
+              .forEach(configuration -> {
+                configuration.resolve()
+                  .stream()
+                  .filter(file -> file.getName().endsWith(".jar"))
+                  .forEach(file -> {
+                    project.copy(copySpec -> {
+                      copySpec.from(file);
+                      copySpec.into(destination);
+                    });
+                  });
+              });
+          });
+        });
+  }
+
 }
