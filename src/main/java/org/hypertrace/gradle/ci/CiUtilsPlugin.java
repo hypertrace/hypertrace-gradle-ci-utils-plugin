@@ -9,6 +9,7 @@ import org.hypertrace.gradle.ci.tasks.CopyReportsTask;
 public class CiUtilsPlugin implements Plugin<Project> {
   public static final String COPY_ALL_REPORTS_TASK_NAME = "copyAllReports";
   public static final String DOWNLOAD_DEPENDENCIES_TASK_NAME = "downloadDependencies";
+  public static final String PRINT_PROJECT_NAME = "printProjectName";
   private static final String TASK_GROUP = "CircleCI Utility";
 
   @Override
@@ -17,6 +18,7 @@ public class CiUtilsPlugin implements Plugin<Project> {
         project -> {
           this.addReportCopyTaskToProject(project);
           this.addDownloadDependenciesTaskToProject(project);
+          this.addPrintProjectNameTaskToProject(project);
         });
   }
 
@@ -47,6 +49,17 @@ public class CiUtilsPlugin implements Plugin<Project> {
                           .getConfigurations()
                           .matching(Configuration::isCanBeResolved)
                           .forEach(Configuration::resolve));
+            });
+  }
+
+  private void addPrintProjectNameTaskToProject(Project project) {
+    project
+        .getTasks()
+        .register(
+            PRINT_PROJECT_NAME,
+            createdTask -> {
+              createdTask.setDescription("Outputs the project name");
+              createdTask.doLast(unused -> project.getLogger().quiet(project.getName()));
             });
   }
 }
