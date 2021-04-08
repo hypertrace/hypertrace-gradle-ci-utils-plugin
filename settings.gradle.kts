@@ -3,13 +3,13 @@ pluginManagement {
     mavenLocal()
     gradlePluginPortal()
     maven {
-      url = uri("https://dl.bintray.com/hypertrace/maven")
+      url = uri("https://hypertrace.jfrog.io/artifactory/maven")
     }
   }
 }
 
 plugins {
-  id("org.hypertrace.version-settings") version "0.1.1"
+  id("org.hypertrace.version-settings") version "0.2.0"
 }
 
 rootProject.name = "hypertrace-gradle-ci-utils-plugin"
