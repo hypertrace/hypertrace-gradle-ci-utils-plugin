@@ -34,7 +34,6 @@ public class CopyReportsTask extends DefaultTask {
 
   public CopyReportsTask() {
     this.setOutputDir(new File(getProject().getBuildDir(), "collected-reports"));
-    this.dependsOn(this.getReportingTasks(getProject()));
   }
 
   @TaskAction
