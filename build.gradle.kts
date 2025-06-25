@@ -3,7 +3,7 @@ import org.hypertrace.gradle.publishing.License.APACHE_2_0
 plugins {
   `java-gradle-plugin`
   id("org.hypertrace.ci-utils-plugin") version "0.2.0"
-  id("org.hypertrace.publish-plugin") version "1.0.2"
+  id("org.hypertrace.publish-plugin") version "1.1.1"
 }
 
 group = "org.hypertrace.gradle.ci"
