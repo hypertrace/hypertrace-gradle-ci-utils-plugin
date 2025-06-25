@@ -10,7 +10,7 @@ public class CiUtilsPlugin implements Plugin<Project> {
   public static final String COPY_ALL_REPORTS_TASK_NAME = "copyAllReports";
   public static final String DOWNLOAD_DEPENDENCIES_TASK_NAME = "downloadDependencies";
   public static final String PRINT_PROJECT_NAME = "printProjectName";
-  private static final String TASK_GROUP = "CircleCI Utility";
+  private static final String TASK_GROUP = "CI Utility";
 
   @Override
   public void apply(@Nonnull Project target) {

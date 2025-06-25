@@ -1,6 +1,5 @@
 # Hypertrace CI Utils Plugin
 ###### org.hypertrace.ci-utils-plugin
-[![CircleCI](https://circleci.com/gh/hypertrace/hypertrace-gradle-ci-utils-plugin.svg?style=svg)](https://circleci.com/gh/hypertrace/hypertrace-gradle-ci-utils-plugin)
 
 ### Purpose
 This plugin is applied to a project to provide useful utility functions often used in CI jobs.
